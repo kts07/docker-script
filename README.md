@@ -55,8 +55,6 @@ transaction-isolation = READ-COMMITTED
 !includedir /etc/mysql/conf.d/
 ```
 
-如果`sql_mode = NO_AUTO_VALUE_ON_ZERO`，请删除此选项
-
 ### 创建数据库&用户
 
 - 创建数据库
