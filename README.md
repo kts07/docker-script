@@ -9,22 +9,50 @@
 
 ### 数据库设置
 
-选择安装的Confluence版本，阅读[Database Setup For MySQL](https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html)后，修改[Mysql配置文件](https://dev.mysql.com/doc/refman/5.7/en/option-files.html)，本文以Mysql 8.0为例
+选择安装的Confluence版本，阅读[Database Setup For MySQL](https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html)后，修改[Mysql配置文件](https://dev.mysql.com/doc/refman/5.7/en/option-files.html)，本文以Mysql 8.0 的 /etc/mysql/my.cnf 为例
 
 ```
+# Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL  Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
 [mysqld]
-...
-character-set-server=utf8mb4 
-collation-server=utf8mb4_bin
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+
 default-storage-engine=INNODB
-max_allowed_packet=256M 
-innodb_log_file_size=2GB
-transaction-isolation=READ-COMMITTED
-binlog_format=row
-log-bin-trust-function-creators = 1
-// 如果为Mysql5.7，关闭derived_merge能优化仪表板加载缓慢
-optimizer_switch = derived_merge=off
-...
+
+character_set_server=utf8mb4
+
+innodb_default_row_format=DYNAMIC
+
+innodb_log_file_size=2G
+
+sql_mode = NO_AUTO_VALUE_ON_ZERO
+
+transaction-isolation = READ-COMMITTED
+
+# Custom config should go here
+!includedir /etc/mysql/conf.d/
 ```
 
 如果`sql_mode = NO_AUTO_VALUE_ON_ZERO`，请删除此选项
