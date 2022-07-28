@@ -1,0 +1,17 @@
+version: '3'
+services:
+    confluence:
+        container_name: confluence
+        image: "atlassian/confluence-server"
+        volumes: 
+            - ./atlassian-agent.jar:/var/atlassian/atlassian-agent.jar
+            - ./mysql-connector-java-8.0.22.jar:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java-8.0.22.jar
+            - /data/confluence:/var/atlassian/application-data/confluence
+        environment:
+            - JAVA_OPTS="-javaagent:/var/atlassian/atlassian-agent.jar"
+            - JVM_MINIMUM_MEMORY=1024m
+            - JVM_MAXIMUM_MEMORY=1024m
+            - JVM_RESERVED_CODE_CACHE_SIZE=512m
+        ports: 
+            - "8090:8090"
+        restart: always
